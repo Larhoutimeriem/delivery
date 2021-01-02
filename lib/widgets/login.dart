@@ -28,8 +28,8 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     textControllerEmail = TextEditingController();
     textControllerPassword = TextEditingController();
-    textControllerEmail.text = null;
-    textControllerPassword.text = null;
+    textControllerEmail.text = "meriem@gmail.fr";
+    textControllerPassword.text = "12345678";
     textFocusNodeEmail = FocusNode();
     textFocusNodePassword = FocusNode();
     super.initState();
