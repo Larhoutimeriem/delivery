@@ -3,6 +3,7 @@ import 'package:firebase/firebase.dart';
 import 'package:google_maps/google_maps.dart' hide Icon;
 import 'dart:html';
 import 'dart:ui' as ui;
+import 'package:delivery/utils/globals.dart' as globals;
 
 class mapViewPage extends StatefulWidget {
   @override
@@ -12,8 +13,7 @@ class mapViewPage extends StatefulWidget {
 class _mapViewPageState extends State<mapViewPage> {
 
   Map<dynamic, dynamic> values = new Map();
-  List _data = [];
-  List<LatLng> latlngs = [LatLng(48.813055, 2.38822), LatLng(48.811325,2.3920731)];
+  List _data = [{'location': {'adresse': 'ma position' ,'latitude': globals.lat, 'longitude': globals.lng}}];
 
   void _getData() async{
 
@@ -33,9 +33,7 @@ class _mapViewPageState extends State<mapViewPage> {
   }
   
   Widget getMap() {
-    print(_data);
     String htmlId = "7";
-
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
 
       final mapOptions = new MapOptions()
@@ -50,10 +48,11 @@ class _mapViewPageState extends State<mapViewPage> {
 
       final map = new GMap(elem, mapOptions);
 
-      for (LatLng point in latlngs) {
+      for (var i = 0; i< _data.length; i++) {
         Marker(MarkerOptions()
-          ..position = point
-          ..map = map);
+          ..position = LatLng(_data[i]['location']['latitude'], _data[i]['location']['longitude'])
+          ..map = map
+          ..title = _data[i]['location']['adresse']);
       }
 
       return elem;

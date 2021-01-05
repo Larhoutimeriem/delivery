@@ -60,14 +60,6 @@ class _orderDeliveredPageState extends State<orderDeliveredPage> {
               onPressed: () => MapsLauncher.launchCoordinates(
                 _data[index]["location"]["latitude"], _data[index]["location"]["longitude"]
               ),
-            ),
-            FlatButton(
-            child: Text('Livré!'),
-              onPressed: () {
-                Database db = database();
-                DatabaseReference ref = db.ref('users/'+ _data[index]["key"] + "/status");
-                ref.set('delivered');
-              },
             )
           ],
         )),
