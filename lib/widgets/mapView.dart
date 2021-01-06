@@ -14,7 +14,7 @@ class _mapViewPageState extends State<mapViewPage> {
 
   Map<dynamic, dynamic> values = new Map();
   List _data = [{'location': {'adresse': 'ma position' ,'latitude': globals.lat, 'longitude': globals.lng}}];
-
+  List orderPending = [];
   void _getData() async{
 
     Database db = database();
@@ -48,11 +48,13 @@ class _mapViewPageState extends State<mapViewPage> {
 
       final map = new GMap(elem, mapOptions);
 
-      for (var i = 0; i< _data.length; i++) {
+      orderPending = _data.where((item) => item["status"] == "pending").toList();
+
+      for (var i = 0; i< orderPending.length; i++) {
         Marker(MarkerOptions()
-          ..position = LatLng(_data[i]['location']['latitude'], _data[i]['location']['longitude'])
+          ..position = LatLng(orderPending[i]['location']['latitude'], orderPending[i]['location']['longitude'])
           ..map = map
-          ..title = _data[i]['location']['adresse']);
+          ..title = orderPending[i]['location']['adresse']);
       }
 
       return elem;
@@ -64,9 +66,6 @@ class _mapViewPageState extends State<mapViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Map view'),
-      ),
       body: Container(
         child: getMap(),
       ),

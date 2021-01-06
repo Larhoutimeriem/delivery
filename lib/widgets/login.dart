@@ -40,10 +40,10 @@ class _LoginPageState extends State<LoginPage> {
 
     if (textControllerEmail.text != null) {
       if (value.isEmpty) {
-        return 'Email can\'t be empty';
+        return 'Email ne peut pas être vide';
       } else if (!value.contains(RegExp(
           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"))) {
-        return 'Enter a correct email address';
+        return 'Entrez une adresse email correcte';
       }
     }
 
@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (textControllerEmail.text != null) {
       if (value.isEmpty)
-        return 'Password can\'t be empty';
+        return 'Mot de passe ne peut pas être vide';
     }
 
     return null;
@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('Connexion'),
       ),
       body: SafeArea(
         minimum: const EdgeInsets.all(16),
@@ -150,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                 hintStyle: new TextStyle(
                   color: Colors.blueGrey[300],
                   ),
-                hintText: "Password",
+                hintText: "Mot de passe",
                 fillColor: Colors.white,
                 errorText: _isEditingPassword
                     ? _validatePassword(textControllerPassword.text)
@@ -162,9 +162,9 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             FlatButton(
-              color: Colors.blueGrey[800],
-              hoverColor: Colors.blueGrey[900],
-              highlightColor: Colors.black,
+              color: Colors.blueAccent,
+              hoverColor: Colors.blueAccent,
+              highlightColor: Colors.blueAccent,
               onPressed: () async {
                 setState(() {
                   _isLoggingIn = true;
@@ -200,7 +200,7 @@ class _LoginPageState extends State<LoginPage> {
                         });
                     } else {
                         setState(() {
-                          loginStatus = 'Please enter email & password';
+                          loginStatus = 'Veuillez saisir votre email et votre mot de passe';
                           loginStringColor = Colors.red;
                         });
                       }
@@ -231,7 +231,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 )
                 : Text(
-                  'Log in',
+                  'Se connecter',
                   style: TextStyle(
                     fontSize: 14,                    
                     color: Colors.white,

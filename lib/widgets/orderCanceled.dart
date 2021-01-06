@@ -6,12 +6,12 @@ import 'package:geodesy/geodesy.dart';
 import 'package:delivery/utils/globals.dart' as globals;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class orderPendigPage extends StatefulWidget {
+class orderCancelPage extends StatefulWidget {
   @override
-  _orderPendigPageState createState() => _orderPendigPageState();
+  _orderCancelPageState createState() => _orderCancelPageState();
 }
 
-class _orderPendigPageState extends State<orderPendigPage> {
+class _orderCancelPageState extends State<orderCancelPage> {
 
   Map<dynamic, dynamic> values = new Map();
   List _data = [];
@@ -61,25 +61,6 @@ class _orderPendigPageState extends State<orderPendigPage> {
               onPressed: () => MapsLauncher.launchCoordinates(
                 _data[index]["location"]["latitude"], _data[index]["location"]["longitude"]
               ),
-            ),
-            FlatButton(
-            child: Text('Livré!'),
-              onPressed: () {
-                Database db = database();
-                DatabaseReference ref = db.ref('users/'+ _data[index]["key"] + "/status");
-                ref.set('delivered');
-                setState(() {});
-                Navigator.of(context).pop();
-              },
-            ),
-            FlatButton(
-            child: Text('Annulé!'),
-              onPressed: () {
-                Database db = database();
-                DatabaseReference ref = db.ref('users/'+ _data[index]["key"] + "/status");
-                ref.set('canceled');
-                Navigator.of(context).pop();
-              },
             )
           ],
         )),
@@ -97,8 +78,8 @@ class _orderPendigPageState extends State<orderPendigPage> {
 
   @override
   Widget build(BuildContext context) {
-    orderPendig = _data.where((item) => item["status"] == "pending").toList();
     IconData icon;
+    orderPendig = _data.where((item) => item["status"] == "canceled").toList();
     return Container(
           padding: new EdgeInsets.all(32.0),
           child: new Center(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:delivery/Widgets/ListOrders.dart';
 import 'package:delivery/Widgets/mapView.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,18 +12,17 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DefaultTabController(
+    return DefaultTabController(
         length: 2,
         child: Scaffold(
           appBar: AppBar(
             bottom: TabBar(
-              tabs: [
-                Tab(text: "List view"),
-                Tab(text: "Map view"),
+              tabs: <Widget>[
+                Tab(icon: Icon(FontAwesomeIcons.list), text: "Liste commandes"),
+                Tab(icon: Icon(FontAwesomeIcons.mapMarkedAlt), text: "Carte Map"),
               ],
             ),
-            title: Text('Home'),
+            title: Text('Accueil'),
           ),
           body: TabBarView(
             children: [
@@ -31,7 +31,6 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-      ),
     );  
   }  
 }

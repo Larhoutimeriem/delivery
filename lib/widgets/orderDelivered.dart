@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:geodesy/geodesy.dart';
 import 'package:delivery/utils/globals.dart' as globals;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class orderDeliveredPage extends StatefulWidget {
   @override
@@ -78,18 +79,21 @@ class _orderDeliveredPageState extends State<orderDeliveredPage> {
   @override
   Widget build(BuildContext context) {
     ordersDelivered = _data.where((item) => item["status"] == "delivered").toList();
-    return new Scaffold(
-      body: new Container(
+    IconData icon;
+    return Container(
           padding: new EdgeInsets.all(32.0),
           child: new Center(
             child: new Column(
               children: <Widget>[
-                new Text('Orders', style: new TextStyle(fontWeight: FontWeight.bold),),
                 new Expanded(child: new ListView.builder(
                   itemCount: ordersDelivered.length,
                   itemBuilder: (BuildContext context, int index){
                     LatLng l1 = LatLng(ordersDelivered[index]["location"]["latitude"], ordersDelivered[index]["location"]["longitude"]);
                     LatLng l2 = LatLng(globals.lat, globals.lng);
+                    if(ordersDelivered[index]["paymentInfos"]=="cash")
+                      icon = FontAwesomeIcons.handHoldingUsd;
+                    if(ordersDelivered[index]["paymentInfos"]=="card")
+                      icon = FontAwesomeIcons.creditCard;
                     return Card(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,11 +103,44 @@ class _orderDeliveredPageState extends State<orderDeliveredPage> {
                             onTap: () {_showDialog(index);},
                           ),
                           Text("Nom: " + ordersDelivered[index]["nom"]),
-                          Text("Prenom: " + ordersDelivered[index]["prenom"]),
+                          Text("Prénom: " + ordersDelivered[index]["prenom"]),
                           Text("Tel: " + ordersDelivered[index]["tel"].toString()),
-                          Text("Comment: " + ordersDelivered[index]["comment"]),
+                          Text("Commentaire: " + ordersDelivered[index]["comment"]),
                           Text("adresse: " + ordersDelivered[index]["location"]["adresse"]),
-                          Text(geodesy.distanceBetweenTwoGeoPoints(l1, l2).toString()),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  style: TextStyle(color: Colors.black),
+                                  text: "Paiement: ",
+                                ),
+                                TextSpan(
+                                  style: TextStyle(color: Colors.black),
+                                  text: ordersDelivered[index]["price"].toString() + "  ",
+                                ),
+                                WidgetSpan(
+                                  child: Icon(icon, size: 20),
+                                ),
+                              ],
+                            ),
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                WidgetSpan(
+                                  child: Icon(FontAwesomeIcons.mapMarkerAlt, size: 20),
+                                ),
+                                TextSpan(
+                                  style: TextStyle(color: Colors.black),
+                                  text: geodesy.distanceBetweenTwoGeoPoints(l1, l2).round().toString(),
+                                ),
+                                TextSpan(
+                                  style: TextStyle(color: Colors.black),
+                                  text: " m",
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     );
@@ -111,8 +148,7 @@ class _orderDeliveredPageState extends State<orderDeliveredPage> {
                 ))
               ],
             ),
-          )
-      ),
+          ),
     );
   }
   @override
