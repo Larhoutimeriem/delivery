@@ -22,10 +22,11 @@ class _orderCancelPageState extends State<orderCancelPage> {
 
     Database db = database();
     DatabaseReference ref = db.ref('users');
-
     ref.onValue.listen((e) {
       DataSnapshot datasnapshot = e.snapshot;
       values = datasnapshot.val();
+      _data = [];
+      if (!mounted) return;
       setState(() => 
         values.forEach((key, val) {
           val["key"] = key;
@@ -43,23 +44,23 @@ class _orderCancelPageState extends State<orderCancelPage> {
   showDialog(context: context, builder: (BuildContext context) => alert);
   }
 
-  _showDialog(int index) {
+  _showDialog(order) {
     showDialog(
       context: context,
       builder: (_) => new AlertDialog(
-        title: new Text(_data[index]["nom"]),
+        title: new Text(order["nom"]),
         content: Container(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             FlatButton(
             child: Text('Appeler client!'),
-              onPressed: () => launch("tel://${_data[index]["tel"]}"),
+              onPressed: () => launch("tel://${order["tel"]}"),
             ),
             FlatButton(
               child: Text('go maps!'),
               onPressed: () => MapsLauncher.launchCoordinates(
-                _data[index]["location"]["latitude"], _data[index]["location"]["longitude"]
+                order["location"]["latitude"], order["location"]["longitude"]
               ),
             )
           ],
@@ -78,8 +79,8 @@ class _orderCancelPageState extends State<orderCancelPage> {
 
   @override
   Widget build(BuildContext context) {
-    IconData icon;
     orderPendig = _data.where((item) => item["status"] == "canceled").toList();
+    IconData icon;
     return Container(
           padding: new EdgeInsets.all(32.0),
           child: new Center(
@@ -100,7 +101,7 @@ class _orderCancelPageState extends State<orderCancelPage> {
                         children: <Widget>[
                           ListTile(
                             title: Text(orderPendig[index]["numero"]),
-                            onTap: () {_showDialog(index);},
+                            onTap: () {_showDialog(orderPendig[index]);},
                           ),
                           Text("Nom: " + orderPendig[index]["nom"]),
                           Text("Prénom: " + orderPendig[index]["prenom"]),
